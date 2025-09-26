@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digit Tile Animation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f5f7fa;
+      margin: 0;
+    }
+
+    .tile-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 50px;
+    }
+
+    .tile {
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: bold;
+      border-radius: 12px;
+      background-color: #e0e0e0;
+      transition: background-color 0.6s ease, color 0.6s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Highlight states */
+    .highlight-1 {
+      background-color: #ff6b6b; /* warm red */
+      color: white;
+    }
+    .highlight-4 {
+      background-color: #4ecdc4; /* teal */
+      color: white;
+    }
+    .highlight-5 {
+      background-color: #ffe66d; /* golden yellow */
+      color: #333;
+    }
+
+    button {
+      padding: 14px 28px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background: #1a73e8;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0c56c9;
+    }
+  </style>
+</head>
+<body>
+  <div class="tile-row" id="tileRow"></div>
+  <button id="startBtn">Start Animation</button>
+
+  <script>
+    const digits = [4, 8, 5, 1, 4, 1, 4, 5, 4, 1, 5, 4, 5];
+    const tileRow = document.getElementById("tileRow");
+
+    // Render tiles
+    digits.forEach(d => {
+      const div = document.createElement("div");
+      div.className = "tile";
+      div.textContent = d;
+      tileRow.appendChild(div);
+    });
+
+    const tiles = document.querySelectorAll(".tile");
+
+    function highlightSequence() {
+      // Reset
+      tiles.forEach(tile => tile.className = "tile");
+
+      // Step 1: highlight 1s
+      setTimeout(() => {
+        tiles.forEach(tile => {
+          if (tile.textContent === "1") tile.classList.add("highlight-1");
+        });
+      }, 500);
+
+      // Step 2: highlight 4s except first
+      setTimeout(() => {
+        let firstFourFound = false;
+        tiles.forEach(tile => {
+          if (tile.textContent === "4") {
+            if (!firstFourFound) {
+              firstFourFound = true; // skip first 4
+            } else {
+              tile.classList.add("highlight-4");
+            }
+          }
+        });
+      }, 2000);
+
+      // Step 3: highlight 5s
+      setTimeout(() => {
+        tiles.forEach(tile => {
+          if (tile.textContent === "5") tile.classList.add("highlight-5");
+        });
+      }, 3500);
+    }
+
+    document.getElementById("startBtn").addEventListener("click", highlightSequence);
+  </script>
+</body>
+</html>
